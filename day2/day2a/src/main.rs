@@ -1,7 +1,5 @@
-use std::fs;
+use std::{fmt, fs};
 use std::io;
-use std::fmt;
-
 #[derive(Debug)]
 enum ParseError {
     InvalidNumber,
@@ -18,7 +16,7 @@ impl fmt::Display for ParseError {
 impl std::error::Error for ParseError {}
 
 fn main() -> io::Result<()> {
-    let file_path = "data.txt";
+    let file_path = "../data.txt";
     let input_data = fs::read_to_string(file_path)?;
 
     let reports: Vec<Vec<i32>> = parse_input(&input_data)
@@ -26,7 +24,7 @@ fn main() -> io::Result<()> {
 
     let safe_count = reports
         .iter()
-        .filter(|report| is_safe_with_retries(report))
+        .filter(|report| check_report(report))
         .count();
 
     println!("Safe Count: {}", safe_count);
@@ -67,31 +65,4 @@ fn check_report(report: &[i32]) -> bool {
     }
 
     true // The report is safe
-}
-
-/// Attempts to fix a report by removing a single element at `index_to_skip`.
-/// Returns `true` if the modified report is safe.
-fn is_safe_after_modification(report: &[i32], index_to_skip: usize) -> bool {
-    let modified_report: Vec<_> = report
-        .iter()
-        .enumerate()
-        .filter(|&(i, _)| i != index_to_skip)
-        .map(|(_, &v)| v)
-        .collect();
-
-    check_report(&modified_report)
-}
-
-/// Checks if a report is safe, allowing for one level to be removed
-fn is_safe_with_retries(report: &[i32]) -> bool {
-    if check_report(report) {
-        return true;
-    }
-    for i in 0..report.len() {
-        if is_safe_after_modification(report, i) {
-            return true;
-        }
-    }
-    println!("{:?}",report);
-    false
 }

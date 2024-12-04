@@ -1,7 +1,7 @@
 use std::{fs, io};
 
 fn main() -> io::Result<()> {
-    let file_path = "data.txt";
+    let file_path = "../data.txt";
     let input_data = fs::read_to_string(file_path)?;
 
     let word_search: Vec<Vec<char>> = input_data
@@ -10,7 +10,7 @@ fn main() -> io::Result<()> {
         .collect();
 
     let mut count = 0;
-    
+
     let directions = [
         (0, 1),  // Horizontal right
         (0, -1),  // Horizontal left

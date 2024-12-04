@@ -1,7 +1,7 @@
 use std::{fs, io};
 
 fn main() -> io::Result<()> {
-    let file_path = "data.txt";
+    let file_path = "../data.txt";
     let input_data = fs::read_to_string(file_path)?;
 
     let word_search: Vec<Vec<char>> = input_data
@@ -33,7 +33,7 @@ fn matches_xmas(
     let b = word_search[i-1][j-1] == 'S' && word_search[i+1][j+1] == 'M';
     let c = word_search[i+1][j-1] == 'M' && word_search[i-1][j+1] == 'S';
     let d = word_search[i+1][j-1] == 'S' && word_search[i-1][j+1] == 'M';
-    
+
     if (a||b) && (c||d) {
         return true;
     }
