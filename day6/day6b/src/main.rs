@@ -1,3 +1,4 @@
+use rayon::prelude::*;
 use std::{fs, io};
 use std::collections::HashSet;
 use crate::Direction::{Down, Left, Right, Up};
@@ -10,17 +11,23 @@ fn main() -> io::Result<()> {
         .map(|line| line.chars().collect::<Vec<char>>())
         .collect();
 
+
+    let indices: Vec<(usize, usize)> = (0..matrix.len())
+        .flat_map(|row| (0..matrix[0].len()).map(move |col| (row, col)))
+        .collect();
     
-    let mut count = 0;
-    for row in 0..matrix.len() {
-        for col in 0..matrix[0].len() {
+    let count: usize = indices
+        .into_par_iter() // Use Rayon to parallelize
+        .filter_map(|(row, col)| {
             if matrix[row][col] == '.' {
                 let mut clone = matrix.clone();
                 clone[row][col] = '#';
-                count += check_for_loop(&mut clone);
+                Some(check_for_loop(&mut clone))
+            } else {
+                None
             }
-        }
-    }
+        })
+        .sum(); // Sum the results
     
     println!("{}", count);
     Ok(())
