@@ -1,14 +1,9 @@
-use std::{fs, io};
-
+use std::{io};
+use common::load_as_2d_char_matrix;
 fn main() -> io::Result<()> {
     let file_path = "../data.txt";
-    let input_data = fs::read_to_string(file_path)?;
 
-    let word_search: Vec<Vec<char>> = input_data
-        .lines()
-        .map(|line| line.chars().collect())
-        .collect();
-
+    let word_search= load_as_2d_char_matrix(file_path)?;
     let mut count = 0;
 
     for i in 1..word_search.len() -1 {

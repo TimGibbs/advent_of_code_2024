@@ -1,13 +1,9 @@
-use std::{fs, io};
+use std::{io};
 use rayon::prelude::*;
-
+use common::load_as_2d_char_matrix;
 fn main() -> io::Result<()> {
     let file_path = "../data.txt";
-    let input_data = fs::read_to_string(file_path)?;
-
-    let matrix: Vec<Vec<char>> = input_data.lines()
-        .map(|line| line.chars().collect::<Vec<char>>())
-        .collect();
+    let matrix = load_as_2d_char_matrix(file_path)?;
 
     let starts: Vec<(usize, usize)> = matrix
         .iter()
