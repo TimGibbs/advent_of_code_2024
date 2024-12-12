@@ -24,3 +24,11 @@ pub fn add_vector_to_positions(position: (usize, usize), vector: &(isize, isize)
     let x = add_isize_to_usize(position.1, vector.1)?;
     Some((y, x))
 }
+
+pub fn add_vector_to_positions_with_bounds(position: (usize, usize), vector: &(isize, isize), y_bound: usize, x_bound: usize) -> Option<(usize, usize)> {
+    let y = add_isize_to_usize(position.0, vector.0)?;
+    let x = add_isize_to_usize(position.1, vector.1)?;
+    if y>= y_bound { return None; }
+    if x>= x_bound { return None; }
+    Some((y, x))
+}
