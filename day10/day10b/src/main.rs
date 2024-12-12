@@ -1,6 +1,7 @@
 use std::{io};
 use rayon::prelude::*;
 use common::load_as_2d_char_matrix;
+use common::add_vector_to_positions;
 fn main() -> io::Result<()> {
     let file_path = "../data.txt";
     let matrix = load_as_2d_char_matrix(file_path)?;
@@ -47,16 +48,3 @@ fn iterate(matrix: &[Vec<char>], position: (usize, usize), step:u32) -> usize {
     chain
 }
 
-fn add_vector_to_positions(position: (usize, usize), vector: &(isize, isize)) -> Option<(usize, usize)> {
-    let y = add_isize_to_usize(position.0, vector.0)?;
-    let x = add_isize_to_usize(position.1, vector.1)?;
-    Some((y, x))
-}
-
-fn add_isize_to_usize(u: usize, i: isize) -> Option<usize> {
-    if i >= 0 {
-        u.checked_add(i as usize)
-    } else {
-        u.checked_sub((-i) as usize)
-    }
-}
